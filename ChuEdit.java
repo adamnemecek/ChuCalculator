@@ -14,7 +14,7 @@ class ChuEdit extends Panel {
   Button parseButton, storeButton;
   TextArea messageArea;
 
-  ChuEdit(Calc _calc) 
+  ChuEdit(Calc _calc)
   {
     calc = _calc;
 
@@ -41,25 +41,25 @@ class ChuEdit extends Panel {
 
     leftView.rowField.setEditable(true);
     leftView.rowField.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
-        Parse();        
+        Parse();
       }
     });
 
     leftView.colField.setEditable(true);
     leftView.colField.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
-        Parse();        
+        Parse();
       }
     });
 
     leftView.kField.setEditable(true);
     leftView.kField.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
-        Parse();        
+        Parse();
       }
     });
 
@@ -71,7 +71,7 @@ class ChuEdit extends Panel {
     // parseButton: parse leftView and display result in rightView
     parseButton = new Button("Parse>>");
     parseButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
         Parse();
       }
@@ -82,7 +82,7 @@ class ChuEdit extends Panel {
     // storeButton: save rightView into location selected by choice
     storeButton = new Button("<<Store");
     storeButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
         Store();
       }
@@ -100,12 +100,12 @@ class ChuEdit extends Panel {
 
     // rightView: displays result of parsing
     rightView = new ChuView();
-    
+
     Layout.addComponent(this, rightView,
                         5, 1, 3, 5);
 
-   
-    // register observer to handle updates after calculation 
+
+    // register observer to handle updates after calculation
     calc.addObserver( new Observer() {
       public void update(Observable o, Object arg)
       {
@@ -119,7 +119,7 @@ class ChuEdit extends Panel {
           choice.removeAll();
           loadChoice();
 
-          if(identifier != null) choice.select(identifier);    
+          if(identifier != null) choice.select(identifier);
 
           DisplayIdentifier();
           break;
@@ -135,14 +135,14 @@ class ChuEdit extends Panel {
   void loadChoice()
   {
     Enumeration e = calc.lvalueIdentifiers();
-    while(e.hasMoreElements()) 
+    while(e.hasMoreElements())
     {
       choice.add((String)e.nextElement());
     }
   }
 
-  void DisplayIdentifier()  
-  { 
+  void DisplayIdentifier()
+  {
     try {
       String identifier = choice.getSelectedItem();
       leftView.DisplaySpace(calc.lookupVariable(identifier), true);
@@ -152,7 +152,7 @@ class ChuEdit extends Panel {
     }
   }
 
-  void Parse() 
+  void Parse()
   {
     if(leftView.textArea.getText().equals("Undefined")) {
       messageArea.setText("Please enter a grid of digits.  "+
@@ -160,7 +160,7 @@ class ChuEdit extends Panel {
       return;
     }
     try {
-      rightView.DisplaySpace( new Chu(leftView.kField.  getText(),             
+      rightView.DisplaySpace( new Chu(leftView.kField.  getText(),
                                       leftView.rowField.getText(),
                                       leftView.colField.getText(),
                                       leftView.textArea.getText()));
@@ -169,7 +169,7 @@ class ChuEdit extends Panel {
     }
     catch (Chu.ParseException x) {
       messageArea.setText(x.getMessage());
-    }    
+    }
   }
 
   void Store()

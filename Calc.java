@@ -10,7 +10,7 @@ class Calc extends Observable
   private Hashtable constants, variables, unops, binops, executables;
   private Conformable undef;
   private Context context;
-  
+
   /* Calculation management */
   static final int BEGIN = 0;
   static final int END   = 1;
@@ -31,7 +31,7 @@ class Calc extends Observable
         return null;
       }
     };
-      
+
     /* Create and register all constants */
 
     constants = new Hashtable(10);
@@ -45,7 +45,7 @@ class Calc extends Observable
       }
     });
 
-    constants.put("_|_",     new Conformable() { 
+    constants.put("_|_",     new Conformable() {
       public Chu conform(Context context)
       {
         return (new Chu(context.k)).dual();
@@ -185,7 +185,7 @@ class Calc extends Observable
       {
         c.setStandardization(false);
       }
-    }; 
+    };
     executables.put("Multi", e);
     executables.put("multi", e);
     executables.put("off", e);
@@ -193,7 +193,7 @@ class Calc extends Observable
 
   /* Manage Context */
 
-  void setK(int value) throws ExecutionException 
+  void setK(int value) throws ExecutionException
   {
     if(value >= 0) {
       context.k = value;
@@ -203,7 +203,7 @@ class Calc extends Observable
     }
   }
 
-  void setStandardization(boolean value) 
+  void setStandardization(boolean value)
   {
     context.standardization = value;
   }
@@ -217,7 +217,7 @@ class Calc extends Observable
 
   /* Manage variables and constants */
 
-  void newVariableNameOK(String newVariableName) 
+  void newVariableNameOK(String newVariableName)
     throws ExecutionException
   {
     if(newVariableName.length() == 0)
@@ -235,7 +235,7 @@ class Calc extends Observable
 
   void bindVariable(String identifier, Chu value) throws ExecutionException
   {
-    if (constants.containsKey(identifier)) 
+    if (constants.containsKey(identifier))
       throw new ExecutionException("Can't change binding of constant "
                                    +identifier);
     variables.put(identifier, (value==null ? undef : value));
@@ -247,7 +247,7 @@ class Calc extends Observable
     return variables.keys();
   }
 
-  Enumeration rvalueIdentifiers() 
+  Enumeration rvalueIdentifiers()
   {
     // Any non-undef variable or constant has a value
 
@@ -276,7 +276,7 @@ class Calc extends Observable
     if (constants.containsKey(identifier)) {
       result = (Conformable)constants.get(identifier);
     }
-    else if(variables.containsKey(identifier)) { 
+    else if(variables.containsKey(identifier)) {
       result = (Conformable)variables.get(identifier);
     }
     else {
@@ -300,7 +300,7 @@ class Calc extends Observable
 
   /* Manage UnaryOperators, BinaryOperators, Executables */
 
-  UnaryOperator lookupUnaryOperator(String identifier) 
+  UnaryOperator lookupUnaryOperator(String identifier)
     throws ExecutionException
   {
     if(unops.containsKey(identifier)) {
@@ -311,7 +311,7 @@ class Calc extends Observable
     }
   }
 
-  BinaryOperator lookupBinaryOperator(String identifier) 
+  BinaryOperator lookupBinaryOperator(String identifier)
     throws ExecutionException
   {
     if(binops.containsKey(identifier)) {
@@ -335,7 +335,7 @@ class Calc extends Observable
 
   /* Calculation management */
 
-  void broadcast(int newEventCode, String message) 
+  void broadcast(int newEventCode, String message)
   {
     eventCode = newEventCode;
     setChanged();
@@ -345,7 +345,7 @@ class Calc extends Observable
   void calculate(String programText, boolean showText)
     throws ExecutionException
   {
-    if (calcThread != null) 
+    if (calcThread != null)
       throw new ExecutionException("Must CANCEL current calculation"+
                                    " before starting another");
 
@@ -353,7 +353,7 @@ class Calc extends Observable
     calcThread = new Thread(new Calculation(programText, showText));
 
     // Start the thread: it will take care of the rest.
-    calcThread.start();    
+    calcThread.start();
   }
 
   void cancel() throws ExecutionException
@@ -373,18 +373,18 @@ class Calc extends Observable
   // object is attached to some Calc object, called Calc.this.
   // Calculation provides a run method, so a Calculation object
   // can be used to construct a Thread.
-  class Calculation implements Runnable 
+  class Calculation implements Runnable
   {
     String programText;
     boolean showText;
- 
+
     Calculation(String programText, boolean showText)
     {
       this.programText = programText;
       this.showText = showText;
     }
 
-    public void run() 
+    public void run()
     {
       // Tell everyone we're going to start,
       // Do the calculation
@@ -395,13 +395,13 @@ class Calc extends Observable
         // This line literally does everything!
         // It creates a program from the given text,
         // and executes it against this calculator.
-        (new Program(programText)).exec(Calc.this); 
+        (new Program(programText)).exec(Calc.this);
 
         broadcast(END, showText ? programText : null);
       }
       catch (SyntaxException x) {
         broadcast(FAIL, x.getMessage());
-      }      
+      }
       catch (ExecutionException x) {
         broadcast(FAIL, x.getMessage());
       }
@@ -419,7 +419,7 @@ class Calc extends Observable
   {
     Calc c = new Calc();
 
-    byte[] buffer = new byte[1000];    
+    byte[] buffer = new byte[1000];
     while(true) {
       System.out.print("> ");
       int length = System.in.read(buffer);
@@ -432,7 +432,7 @@ class Calc extends Observable
       }
       catch (ExecutionException e) {
         System.out.println(e.getMessage());
-      } 
+      }
     }
   }
 }

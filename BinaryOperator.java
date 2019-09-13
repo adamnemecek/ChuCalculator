@@ -5,7 +5,7 @@ abstract class BinaryOperator
   {
     return apply(leftArg, rightArg).conform(context);
   }
-  
+
   abstract Chu apply(Chu leftArg, Chu rightArg)
     throws ExecutionException;
 }

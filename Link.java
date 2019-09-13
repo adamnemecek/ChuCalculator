@@ -5,7 +5,7 @@ class Link
 
   /* constructor */
 
-  Link(Link _next,int _datum) 
+  Link(Link _next,int _datum)
   {
     next = _next;
     datum = _datum;
@@ -18,7 +18,7 @@ class Link
 
   /* for debugging purposes only */
 
-  void show(String pad) 
+  void show(String pad)
   {
     System.out.println(pad + Integer.toString(datum));
     if(next != null) next.show(pad);

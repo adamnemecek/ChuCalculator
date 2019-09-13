@@ -1,25 +1,25 @@
 import java.awt.*;
 
-class Layout 
+class Layout
 {
-  public static void 
+  public static void
   addComponent(Container container, Component component,
-               int gridx, int gridy, 
+               int gridx, int gridy,
                int gridwidth, int gridheight)
   {
-    addComponent(container, component, 
+    addComponent(container, component,
                  gridx, gridy, gridwidth, gridheight,
                  GridBagConstraints.NONE, GridBagConstraints.CENTER);
   }
 
   public static void
   addComponent(Container container, Component component,
-               int gridx, int gridy, 
+               int gridx, int gridy,
                int gridwidth, int gridheight,
                int fill, int anchor)
   {
     LayoutManager lm = container.getLayout();
-    
+
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = gridx;
     gbc.gridy = gridy;

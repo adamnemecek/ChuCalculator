@@ -3,9 +3,9 @@
 // A Node consists of:
 //  an array of child Nodes (for non-leaves)
 //  a List of line indexes (for leaves)
-//  an pointer to the parent Node 
+//  an pointer to the parent Node
 //   (representing this prefix sans last element)
-//  a branch number (the value of the last element) 
+//  a branch number (the value of the last element)
 class Node
 {
   private Node children[];
@@ -24,10 +24,10 @@ class Node
 
   /* inspectors */
 
-  Node child(int branch) 
+  Node child(int branch)
   {
     if (children == null) return null;
-    else return children[branch]; 
+    else return children[branch];
   }
 
   final Node parent() { return parent;}
@@ -37,8 +37,8 @@ class Node
   /* Mutators */
 
   // addDatum: append an index to the list.
-  void addDatum(int datum) 
-  { 
+  void addDatum(int datum)
+  {
     data = new Link(data,datum);
   }
 
@@ -50,14 +50,14 @@ class Node
       children = new Node[arity];
     if (children[branch] == null)
       children[branch] = new Node(this, branch);
-    return children[branch]; 
+    return children[branch];
   }
-  
+
   /* for debugging purposes only */
 
-  void show(String pad) 
+  void show(String pad)
   {
-    if(data != null) data.show(pad+"LIST ");    
+    if(data != null) data.show(pad+"LIST ");
 
     if(children != null) {
       for(int i=0;i<children.length;i++) {

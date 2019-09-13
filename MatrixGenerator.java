@@ -1,19 +1,19 @@
 /* Generates all matrixes whose rows and columns are taken
  * from the prefix trees passed at construction time.
- * 
+ *
  * After construction, each successful call to next
  * produces a representation of a new matrix.
  */
 class MatrixGenerator
 {
   private Tree rowTree; // prefix tree of rows
-  private Tree colTree; // prefix tree of columns 
+  private Tree colTree; // prefix tree of columns
 
   private int nrows,ncols; // Shape of matrix
   private int K; // Entries of matrix are in 0...K-1
 
   // The search algorithm works by trial extension of a region
-  // of overlapping partial rows and columns.  The two arrays 
+  // of overlapping partial rows and columns.  The two arrays
   // below represent that region by locating the Node for
   // each partial row and column.
   private Node rowNodes[];
@@ -33,12 +33,12 @@ class MatrixGenerator
   // can examine these arrays to extract the matrix.
   Link rowLinks[];
   Link colLinks[];
- 
+
   /* Constructor */
 
   MatrixGenerator(Tree rowTree,Tree colTree)
   {
-    ncols = rowTree.length(); 
+    ncols = rowTree.length();
     currentCol=0;
 
     nrows = colTree.length();
@@ -49,7 +49,7 @@ class MatrixGenerator
 
     done = false;
 
-    // initialize row search arrays 
+    // initialize row search arrays
     rowNodes = new Node[nrows];
     rowLinks = new Link[nrows];
     for(int r=0;r<nrows;r++) {
@@ -86,9 +86,9 @@ class MatrixGenerator
     //   cover the same set of cells and match in all values.
     // This set of cells is always the interval before some cell
     //   in the following "herringbone" order:
-    //      1  2  3  4  
-    //     5   9 10 11 
-    //     6 12  15 16 
+    //      1  2  3  4
+    //     5   9 10 11
+    //     6 12  15 16
     //     7 13 17  19
     //     8 14 18 20
 
@@ -100,25 +100,25 @@ class MatrixGenerator
     {
       // Inner loop: go forward one step.
       // Back up as many cells as needed before taking a forward step.
-      while(true) 
+      while(true)
       {
         // If all possibilities for this cell are exhausted,
         // then back up until it is possible to go forward.
-        // If we have to back up and fail, then return false. 
+        // If we have to back up and fail, then return false.
         while(currentBranch==K) {
           success = backward();
           if (!success) return false;
         }
 
-        // If we succeed in going forward, then we re-test bounds. 
+        // If we succeed in going forward, then we re-test bounds.
         // Otherwise we try another value for currentBranch
-        success = forward(); 
+        success = forward();
         if(success) continue outer;
         else currentBranch++;
       }
     }
 
-    // If we get here, the search went out of bounds. 
+    // If we get here, the search went out of bounds.
     // Thus we have a matrix to record.
     for(int r=0;r<nrows;r++)
       rowLinks[r] = rowNodes[r].data();
@@ -128,26 +128,26 @@ class MatrixGenerator
     // move search one step beyond this morphism
     // then return true to indicate we have a morphism
     backward();
-    return true; 
+    return true;
   }
 
   private boolean backward()
   {
-    // Can't back up from 0,0 
+    // Can't back up from 0,0
     if(currentRow==0 && currentCol==0) {
       done = true;
-      return false; 
+      return false;
     }
 
     // First step currentRow, currentCol backward
     if(currentRow <= currentCol) {
       currentCol--;  // Shrink a row leftwards
-    
+
       // If the row is entirely empty,
       //  then go to the end of the previous column.
       if(currentRow == currentCol+1)
          currentRow = nrows-1;
-    } 
+    }
     else {
       currentRow--;  // Shrink a column upwards
 
@@ -158,12 +158,12 @@ class MatrixGenerator
     }
 
     // Second, restore currentBranch and the prefix trees
-    currentBranch = rowNodes[currentRow].branch(); 
-    currentBranch++;  
-    rowNodes[currentRow] = rowNodes[currentRow].parent();   
+    currentBranch = rowNodes[currentRow].branch();
+    currentBranch++;
+    rowNodes[currentRow] = rowNodes[currentRow].parent();
     colNodes[currentCol] = colNodes[currentCol].parent();
 
-    return true;  // Report Success  
+    return true;  // Report Success
   }
 
   private boolean forward()
@@ -174,8 +174,8 @@ class MatrixGenerator
 
     // If it doesn't work, then report failure
     if (rn == null || cn == null) return false;
-    
-    // First update currentBranch and the prefix trees 
+
+    // First update currentBranch and the prefix trees
     rowNodes[currentRow] = rn;
     colNodes[currentCol] = cn;
     currentBranch = 0;
@@ -186,18 +186,18 @@ class MatrixGenerator
 
       // If the row is entirely full,
       //  then go to the start of the next column.
-      if (currentCol == ncols) {  
-        currentCol = currentRow; 
+      if (currentCol == ncols) {
+        currentCol = currentRow;
         currentRow = currentCol+1;
       }
-    } 
+    }
     else {
       currentRow++;  // Grow a column downward
 
       // If the column is entirely full,
       //  then go to the start of the next row.
-      if (currentRow == nrows) { 
-        currentRow = currentCol+1; 
+      if (currentRow == nrows) {
+        currentRow = currentCol+1;
         currentCol = currentRow;
       }
     }
@@ -219,7 +219,7 @@ class MatrixGenerator
     rt.show();
     Tree ct = source.colTree();
     ct.show();
-    
+
     G = new MatrixGenerator(rt,ct);
     System.out.println("made generator");
 
@@ -231,13 +231,13 @@ class MatrixGenerator
       for(int r=0;r<G.rowLinks.length;r++) {
         G.rowLinks[r].show("From " + Integer.toString(r)+" To ");
       }
-      System.out.println("Column Map"); 
+      System.out.println("Column Map");
       for(int c=0;c<G.colLinks.length;c++) {
         G.colLinks[c].show("From " + Integer.toString(c)+" To ");
       }
       System.out.println("");
     }
-  } 
+  }
 }
 
 

@@ -7,7 +7,7 @@ class Chu implements Conformable
 {
   /* A Chu space is a matrix with entries drawn from
    * a set of some finite size K.  The members of the
-   * set are represented by numbers in [0,K-1].  
+   * set are represented by numbers in [0,K-1].
    */
   private int K;
   private int nrows;
@@ -29,14 +29,14 @@ class Chu implements Conformable
 
   /* Special constructor: builds tensor unit
    */
-  Chu(int size) 
+  Chu(int size)
   {
     this(size, 1, size, new int[1][size], true);
     for(int i=0;i<size;i++) matrix[0][i] = i;
   }
 
   /* Parse constructor: builds a Chu space from the given Strings.
-   * Rows are newline terminated, other whitespace is ignored.  
+   * Rows are newline terminated, other whitespace is ignored.
    * Entries are represented by digits 0..K-1 ( K<=10 ).
    * A ParseException is thrown to report trouble.
    */
@@ -61,11 +61,11 @@ class Chu implements Conformable
         K = Integer.parseInt(kText);
         if(K<0 || K>10) throw new
           ParseException("K="+K+" is out of bounds.  Use 0<=K<=10");
-        else 
+        else
           kInit = true;
       }
       catch(NumberFormatException x) {
-        if(kText.length() != 0) throw new 
+        if(kText.length() != 0) throw new
           ParseException("can't parse K='"+kText+"'");
       }
     }
@@ -83,7 +83,7 @@ class Chu implements Conformable
           nrowsInit = true;
       }
       catch(NumberFormatException x) {
-        if(rowText.length() != 0) throw new 
+        if(rowText.length() != 0) throw new
           ParseException("can't parse #rows='"+rowText+"'");
       }
     }
@@ -101,7 +101,7 @@ class Chu implements Conformable
           ncolsInit = true;
       }
       catch(NumberFormatException x) {
-        if(colText.length() != 0) throw new 
+        if(colText.length() != 0) throw new
           ParseException("can't parse #cols='"+colText+"'");
       }
     }
@@ -123,14 +123,14 @@ class Chu implements Conformable
     // Build rows from rowTokenizer: store results in matrix
 
     int r;
-    for(r=0; r<nrows && rowTokenizer.hasMoreTokens() ;r++) 
+    for(r=0; r<nrows && rowTokenizer.hasMoreTokens() ;r++)
     {
-     
-      String rowString = rowTokenizer.nextToken();
-      Vector entries = new Vector();  
 
-      // put all the entries in this row into the Vector entries 
-    
+      String rowString = rowTokenizer.nextToken();
+      Vector entries = new Vector();
+
+      // put all the entries in this row into the Vector entries
+
       for(int j=0;j<rowString.length();j++)
       {
         char ch = rowString.charAt(j);
@@ -139,7 +139,7 @@ class Chu implements Conformable
         if(Character.isDigit(ch)) {
           int d = Character.digit(ch,10);
           if(kInit) {
-            if (d < K) 
+            if (d < K)
               entries.addElement(new Integer(d));
             else { // Out of bounds
               throw new ParseException("Entry ("+(r+1)+","+
@@ -154,7 +154,7 @@ class Chu implements Conformable
           }
         }
         else { // !isDigit
-          int c = entries.size(); 
+          int c = entries.size();
           throw new ParseException("Entry ("+(r+1)+","+(c+1)+")"+
                                    "=`"+rowString.substring(c,c+1)+
                                    "' is not a digit");
@@ -168,7 +168,7 @@ class Chu implements Conformable
         ncols = entries.size();
         ncolsInit = true;
       }
-      matrix[r] = new int[ncols];  
+      matrix[r] = new int[ncols];
 
       // copy ncols elements into matrix[r]: pad as needed
 
@@ -187,7 +187,7 @@ class Chu implements Conformable
         matrix[r][c] = 0;
       }
     }
-  }  
+  }
 
   /* unparse: Returns a string representing this space.
    * Errors are handled by throwing a ParseException/
@@ -196,7 +196,7 @@ class Chu implements Conformable
   {
     if(K>10) throw new ParseException("K="+K+" is out of bounds");
     StringBuffer out = new StringBuffer(100 + nrows*(ncols+1));
-    
+
     for(int r=0;r<nrows;r++) {
       for(int c=0;c<ncols;c++) {
         out.append(Character.forDigit(matrix[r][c],10));
@@ -212,13 +212,13 @@ class Chu implements Conformable
   int nrows() { return nrows;}
   int ncols() { return ncols;}
 
-  Tree rowTree() 
+  Tree rowTree()
   {
     Tree result = new Tree(K,ncols);
     int row[];
-    for(int r=0;r<nrows;r++) {    // Loop over rows  
+    for(int r=0;r<nrows;r++) {    // Loop over rows
       row = matrix[r];            // Get next row
-      result.addLine(row,r);      // add row to tree  
+      result.addLine(row,r);      // add row to tree
     }
     return result;
   }
@@ -229,7 +229,7 @@ class Chu implements Conformable
     int col[] = new int[nrows];
     for(int c=0;c<ncols;c++) {    // Loop over columns
       for(int r=0;r<nrows;r++)    // Get next column
-        col[r]=matrix[r][c]; 
+        col[r]=matrix[r][c];
       result.addLine(col,c);      // add column to tree
     }
     return result;
@@ -237,14 +237,14 @@ class Chu implements Conformable
 
   /* Unary Operations */
 
-  Chu dual() 
+  Chu dual()
   {
     int new_matrix[][] = new int[ncols][nrows];
 
     for(int c=0;c<nrows;c++) for(int r=0;r<ncols;r++)
       new_matrix[r][c] = matrix[c][r];
-    
-    return new Chu(K, ncols, nrows, new_matrix, 
+
+    return new Chu(K, ncols, nrows, new_matrix,
                    (standard==this)); // dual is standard iff original is
   }
 
@@ -300,7 +300,7 @@ class Chu implements Conformable
       // If none of the rows are new, break the loop.
       Enumeration e = future_rows.elements();
       boolean done = true;
-      while(e.hasMoreElements()) 
+      while(e.hasMoreElements())
       {
         int[] row = (int[])e.nextElement();
         if(row_tree.findLine(row) == null)
@@ -336,9 +336,9 @@ class Chu implements Conformable
     Stack future_rows = new Stack();
     for(int r=0;r<nrows;r++)
       future_rows.push(matrix[r]);
-    
+
     // Don't forget the union and intersection of the empty set of rows:
-   
+
     int[] zero_row = new int[ncols];
     for(int c=0;c<ncols;c++) zero_row[c]=0;
     future_rows.push(zero_row);
@@ -347,16 +347,16 @@ class Chu implements Conformable
     for(int c=0;c<ncols;c++) one_row[c]=1;
     future_rows.push(one_row);
 
-    // Loop until no rows remain to insert 
+    // Loop until no rows remain to insert
     while(!future_rows.empty())
     {
       // Is the row on the top of the Stack new?
       int[] row = (int[])future_rows.pop();
       if(row_tree.findLine(row) == null)
-      { 
+      {
         // The row is new: put all unions and intersections on the Stack
         Enumeration e = result_rows.elements();
-        while(e.hasMoreElements()) 
+        while(e.hasMoreElements())
         {
           int[] old_row = (int[])e.nextElement();
 
@@ -412,11 +412,11 @@ class Chu implements Conformable
             matrix[r][c] = B.matrix[r-A.nrows][c-A.ncols];
         }
       }
-    } 
+    }
     return new Chu(K, nrows, ncols, matrix, false);
   }
 
-  static Chu product(Chu A,Chu B) 
+  static Chu product(Chu A,Chu B)
   {
     if (A == null || B == null) return null;
     int K = A.K;  if (B.K > K) K=B.K;
@@ -440,10 +440,10 @@ class Chu implements Conformable
 
         r++; c=0;
       }
-    } 
+    }
     return new Chu(K, nrows, ncols, matrix, false);
   }
- 
+
   static Chu sequence(Chu A, Chu B)
   {
     if (A == null || B == null) return null;
@@ -453,7 +453,7 @@ class Chu implements Conformable
 
     int[] classificationA = A.classifyCols();
     int[] classificationB = B.classifyCols();
-   
+
     // Count rows and columns of answer.
     //   A column of the answer consists of the concatination of
     // a column of A and a column of B.  Duplicates are not allowed.
@@ -484,7 +484,7 @@ class Chu implements Conformable
     // Form answer, column by column
 
     int matrix[][] = new int[nrows][ncols];
-    int r=0; int c=0;     
+    int r=0; int c=0;
 
     for(int ac=0; ac<A.ncols; ac++) // Loop over cols of A
     {
@@ -518,8 +518,8 @@ class Chu implements Conformable
 
   private static final int UNKNOWN = 0;   // < nothing,   > nothing
   private static final int INITIAL = 1;   // < something, > nothing
-  private static final int FINAL = 2;     // < nothing,   > something 
-  private static final int MIDDLE = 3;    // < something, > something 
+  private static final int FINAL = 2;     // < nothing,   > something
+  private static final int MIDDLE = 3;    // < something, > something
   private static final int DUPLICATE = 4; // == previous something
 
   // classifyCols: Returns an array of integers which classify
@@ -529,11 +529,11 @@ class Chu implements Conformable
   {
     int classification[] = new int[ncols];
 
-OUTER: for(int c=0; c<ncols; c++) 
+OUTER: for(int c=0; c<ncols; c++)
     {
       classification[c] = UNKNOWN;
 
-INNER: for(int d=0; d<c; d++) 
+INNER: for(int d=0; d<c; d++)
       {
         // skip comparisons against duplicates or middle elements.
         switch(classification[d]) {
@@ -542,7 +542,7 @@ INNER: for(int d=0; d<c; d++)
           continue INNER;
         }
 
-        switch(compareCols(c, d)) 
+        switch(compareCols(c, d))
         {
         // col c <> col d, so nothing can be infered
         case IC:
@@ -552,8 +552,8 @@ INNER: for(int d=0; d<c; d++)
         case EQ:
           classification[c] = DUPLICATE;
           continue OUTER;
- 
-        // col c < col d.  
+
+        // col c < col d.
         case LT:
           switch(classification[c]) {
           case UNKNOWN: classification[c] = INITIAL; break;
@@ -579,7 +579,7 @@ INNER: for(int d=0; d<c; d++)
         }
       } // INNER
     } // OUTER
-    return classification;  
+    return classification;
   }
 
   private static final int EQ = 0; // ==
@@ -594,7 +594,7 @@ INNER: for(int d=0; d<c; d++)
   {
     int result = EQ;
 
-    for(int r=0; r<nrows; r++) 
+    for(int r=0; r<nrows; r++)
     {
       if(matrix[r][col1] == matrix[r][col2]) {
         continue;
@@ -615,7 +615,7 @@ INNER: for(int d=0; d<c; d++)
     return result;
   }
 
-  static Chu implication(Chu A, Chu B) 
+  static Chu implication(Chu A, Chu B)
   {
     int K = A.K;
     if (K > B.K) K = B.K;
@@ -623,7 +623,7 @@ INNER: for(int d=0; d<c; d++)
     // The "rows" of implication are Chu transforms from A to B
     // These transforms consist of matrices that are ambigiously
     // composed of columns of A or rows of B.  Thus the size of
-    // these rows/transforms/matrices is: 
+    // these rows/transforms/matrices is:
     int size = A.nrows*B.ncols;
 
     // The number of transforms is not known in advance, so
@@ -634,7 +634,7 @@ INNER: for(int d=0; d<c; d++)
     // of the possible rows and columns of the matrix:
     MatrixGenerator MG = new MatrixGenerator(B.rowTree(), A.colTree());
 
-    while (MG.next()) 
+    while (MG.next())
     {
       // Count instances of this matrix.
       // Whenever there are multiple choices for a row or column,
@@ -662,30 +662,30 @@ INNER: for(int d=0; d<c; d++)
       // Build the current transform
       int[] transform = new int[size];
       for(int r=0;r<MG.nrows();r++)
-        for(int c=0;c<MG.ncols();c++) 
+        for(int c=0;c<MG.ncols();c++)
 	  {
 	    int row_index = MG.rowLinks[r].datum();
 	    int row[] = B.matrix[row_index];
-	    int entry = row[c]; 
+	    int entry = row[c];
 	    transform[r*MG.ncols() + c] = entry;
 	  }
 
-      // Record the transform 
+      // Record the transform
       for(int i=0;i<num_instances;i++) {
         transforms.addElement(transform);
-      }           
-    }    
+      }
+    }
 
     // We now have all the transforms, so we can package up the result:
     int new_nrows = transforms.size();
     int matrix[][] = new int[new_nrows][];
     transforms.copyInto(matrix);
-    return new Chu(K, new_nrows, size, matrix, false); 
+    return new Chu(K, new_nrows, size, matrix, false);
   }
 
   /* Conformable interface */
 
-  public Chu conform(Context context) 
+  public Chu conform(Context context)
   {
     if(context.standardization) return standardize();
     else return this;
@@ -695,21 +695,21 @@ INNER: for(int d=0; d<c; d++)
   {
     // If the standard version of this space is not known,
     // compute it and keep a pointer to it.
-    if(standard == null) 
+    if(standard == null)
     {
       // new_nrows counts non-repeat rows
       // unique_rows[] contains indexes of non-repeat rows;
       // (Similarly for cols)
-      int[] unique_rows = new int[nrows]; 
-      int[] unique_cols = new int[ncols]; 
+      int[] unique_rows = new int[nrows];
+      int[] unique_cols = new int[ncols];
       int new_nrows = row_sort(unique_rows);
       int new_ncols = col_sort(unique_cols);
 
-      if((nrows==new_nrows) && (ncols==new_ncols)) 
+      if((nrows==new_nrows) && (ncols==new_ncols))
       { // Already standardized!
         standard = this;
       }
-      else 
+      else
       { // Build the standardized version
         int new_matrix[][] = new int[new_nrows][new_ncols];
         for(int r=0; r<new_nrows; r++)
@@ -735,7 +735,7 @@ INNER: for(int d=0; d<c; d++)
        * If row r is not a copy, insert it into the set.
        * l,h mark bounds of possible insertion locations
        */
-      int l=0,h=num_unique; 
+      int l=0,h=num_unique;
       search: while(l<h) {
 
         /* Does row unique_rows[m] match row r?
@@ -755,24 +755,24 @@ INNER: for(int d=0; d<c; d++)
             h=m;
           else
             l=m+1;
-          continue search;  
+          continue search;
 
         } // end compare
 
         /* If we get here, we have a match.
-         * Throw out row r 
+         * Throw out row r
          */
         continue sort;
 
       } // end search
 
-      /* We have a new row.  Insert it! 
+      /* We have a new row.  Insert it!
        */
       for(int i=num_unique;i>l;i--)
         unique_rows[i] = unique_rows[i-1];
       unique_rows[l] = r;
       num_unique++;
-      
+
     } // end sort
 
     return num_unique;
@@ -790,7 +790,7 @@ INNER: for(int d=0; d<c; d++)
        * If col c is not a copy, insert it into the set.
        * l,h mark bounds of possible insertion locations
        */
-      int l=0,h=num_unique; 
+      int l=0,h=num_unique;
       search: while(l<h) {
 
         /* Does col unique_cols[m] match col c?
@@ -810,30 +810,30 @@ INNER: for(int d=0; d<c; d++)
             h=m;
           else
             l=m+1;
-          continue search;  
+          continue search;
 
         } // end compare
 
         /* If we get here, we have a match.
-         * Throw out col c 
+         * Throw out col c
          */
         continue sort;
 
       } // end search
 
-      /* We have a new col.  Insert it! 
+      /* We have a new col.  Insert it!
        */
       for(int i=num_unique;i>l;i--)
         unique_cols[i] = unique_cols[i-1];
       unique_cols[l] = c;
       num_unique++;
-      
+
     } // end sort
 
     return num_unique;
   }
- 
-  public static void main(String args[]) 
+
+  public static void main(String args[])
   {
     try {
       Chu[] chus = new Chu[2];
@@ -843,8 +843,8 @@ INNER: for(int d=0; d<c; d++)
       for(int i=0; i<chus.length; i++) {
 
         System.out.println(chus[i].unparse());
-/*        
-        int[] classification = chus[i].classifyCols(); 
+/*
+        int[] classification = chus[i].classifyCols();
 
         for(int c=0; c<classification.length; c++)
           System.out.print(classification[c]+" ");
@@ -857,7 +857,7 @@ INNER: for(int d=0; d<c; d++)
         Chu q = chus[i].query();
         System.out.println(q.unparse());
 
-        for(int j=0; j<q.ncols*q.ncols; j++) 
+        for(int j=0; j<q.ncols*q.ncols; j++)
           System.out.print( (j%(q.ncols+1)==0) ? "*" : " " );
         System.out.println("");
         System.out.println(implication(q.dual(), q).unparse());

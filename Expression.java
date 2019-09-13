@@ -17,16 +17,16 @@ abstract class Expression
 
     Expression result = null;
     switch(numtokens) {
-    case 1: 
+    case 1:
       result = new Identifier(tokens[0]);
       break;
-    case 2: 
-      result = new UnaryExpression(tokens[0], 
+    case 2:
+      result = new UnaryExpression(tokens[0],
                                    new Identifier(tokens[1]));
       break;
-    case 3: 
-      result = new BinaryExpression(new Identifier(tokens[0]), 
-                                    tokens[1], 
+    case 3:
+      result = new BinaryExpression(new Identifier(tokens[0]),
+                                    tokens[1],
                                     new Identifier(tokens[2]));
       break;
     }
@@ -62,15 +62,15 @@ class UnaryExpression extends Expression
   String unaryOp;
   Expression argExp;
 
-  UnaryExpression(String unaryOp, Expression argExp) 
-  { 
-    this.unaryOp = unaryOp; 
-    this.argExp = argExp; 
+  UnaryExpression(String unaryOp, Expression argExp)
+  {
+    this.unaryOp = unaryOp;
+    this.argExp = argExp;
   }
 
-  String show()  
-  { 
-    return unaryOp + " " + argExp.show(); 
+  String show()
+  {
+    return unaryOp + " " + argExp.show();
   }
 
   Chu eval(Calc calc) throws ExecutionException
@@ -90,15 +90,15 @@ class BinaryExpression extends Expression
   Expression leftExp, rightExp;
 
   BinaryExpression(Expression leftExp, String binaryOp, Expression rightExp)
-  { 
-    this.leftExp  = leftExp; 
-    this.binaryOp = binaryOp; 
-    this.rightExp = rightExp; 
-  } 
+  {
+    this.leftExp  = leftExp;
+    this.binaryOp = binaryOp;
+    this.rightExp = rightExp;
+  }
 
-  String show()  
-  { 
-    return "(" + leftExp.show() + 
+  String show()
+  {
+    return "(" + leftExp.show() +
              " " + binaryOp + " " +
                 rightExp.show() + ")";
   }
@@ -107,11 +107,11 @@ class BinaryExpression extends Expression
   {
     BinaryOperator operator = calc.lookupBinaryOperator(binaryOp);
     Chu left  = leftExp .eval(calc);
-    if(left==null) throw new 
+    if(left==null) throw new
       ExecutionException(leftExp.show()+" is undefined");
 
     Chu right = rightExp.eval(calc);
-    if(right==null) throw new 
+    if(right==null) throw new
       ExecutionException(rightExp.show()+" is undefined");
 
     return operator.apply(left, right, calc.getContext());

@@ -14,8 +14,8 @@ class ChuTarget extends Panel
   ChuView view;
   Choice choice;
   TextField newVariableField;
-  
-  ChuTarget(Calc _calc) 
+
+  ChuTarget(Calc _calc)
   {
     calc = _calc;
 
@@ -29,7 +29,7 @@ class ChuTarget extends Panel
     choice.select("p");
 
     choice.addItemListener( new ItemListener() {
-      public void itemStateChanged(ItemEvent e) 
+      public void itemStateChanged(ItemEvent e)
       {
         if (choice.getSelectedItem().equals("NEW")) {
           newVariableModeOn();
@@ -47,9 +47,9 @@ class ChuTarget extends Panel
     Layout.addComponent(this, choice,
                         0, 0, 2, 1);
 
-    newVariableField = new TextField(8); 
+    newVariableField = new TextField(8);
     newVariableField.addActionListener( new ActionListener() {
-      public void actionPerformed(ActionEvent e) 
+      public void actionPerformed(ActionEvent e)
       {
         if(e.getSource() == newVariableField) {
           try {
@@ -62,15 +62,15 @@ class ChuTarget extends Panel
         }
       }
     });
-    Layout.addComponent(this, newVariableField, 
+    Layout.addComponent(this, newVariableField,
                         2, 0, 1, 1);
 
     // view: displays selected space
     view = new ChuView();
     Layout.addComponent(this, view,
-                        0, 1, 3, 5);    
-   
-    // register observer to handle updates after calculation 
+                        0, 1, 3, 5);
+
+    // register observer to handle updates after calculation
     calc.addObserver( new Observer() {
       public void update(Observable o, Object arg)
       {
@@ -88,7 +88,7 @@ class ChuTarget extends Panel
           choice.removeAll();
           loadChoice();
 
-          if(identifier != null) choice.select(identifier);    
+          if(identifier != null) choice.select(identifier);
 
           newVariableModeOff();
         }
@@ -117,17 +117,17 @@ class ChuTarget extends Panel
   void loadChoice()
   {
     Enumeration e = calc.lvalueIdentifiers();
-    while(e.hasMoreElements()) 
-    { 
+    while(e.hasMoreElements())
+    {
       choice.add((String)e.nextElement());
     }
     choice.add("NEW");
   }
 
-  void DisplayIdentifier()  
-  { 
+  void DisplayIdentifier()
+  {
     try {
-      view.DisplaySpace(calc.lookupChu(getIdentifier()));   
+      view.DisplaySpace(calc.lookupChu(getIdentifier()));
     }
     catch (ExecutionException x) {
       view.DisplayMessage(x.getMessage());
@@ -136,14 +136,14 @@ class ChuTarget extends Panel
 
   /* Interface used by GUI.java */
 
-  String getIdentifier() throws ExecutionException 
+  String getIdentifier() throws ExecutionException
   {
     if(newVariableMode) {
       String newVariableName = newVariableField.getText().trim();
       calc.newVariableNameOK(newVariableName);
       return newVariableName;
     }
-    else 
+    else
       return choice.getSelectedItem();
   }
 }

@@ -31,19 +31,19 @@ public class GUI extends Applet
   static String[] binaryButtonNames = {
       "+", "*", null, ";", "U", null, "&", "#", "-o", "=>"
   };
-  
+
   // Bottom Panel modes
   static String[] modes = {"Script", "Edit"};
   static final int SCRIPT = 0;
   static final int EDIT   = 1;
 
   // INIT:  Builds all GUI components, and
-  // sets up their layout and event handling 
-  public void init() 
+  // sets up their layout and event handling
+  public void init()
   {
     // First Build the calculator
     calc = new Calc();
-    
+
     // Use bigger font for readability
     Font ourfont = new Font("Helvetica",Font.BOLD,14);
     setFont(ourfont);
@@ -72,7 +72,7 @@ public class GUI extends Applet
     statusPanel.add(cancelButton);
 
     calc.addObserver(new Observer() {
-      public void update(Observable o, Object arg) 
+      public void update(Observable o, Object arg)
       {
         switch(calc.eventCode) {
         case Calc.BEGIN:
@@ -106,7 +106,7 @@ public class GUI extends Applet
       {
         if(ignore) return;
         try {
-          calc.calculate((standardizationBox.getState() ? "Unique" : "Multi"), 
+          calc.calculate((standardizationBox.getState() ? "Unique" : "Multi"),
                          true);
         }
         catch(ExecutionException x) {
@@ -115,7 +115,7 @@ public class GUI extends Applet
       }
     });
     contextPanel.add(standardizationBox);
-	
+
     kField = new TextField("2");
     kField.setEditable(true);
 
@@ -128,7 +128,7 @@ public class GUI extends Applet
         String kText = kField.getText();
         try {
           newK = Integer.parseInt(kText);
-          calc.calculate(Integer.toString(newK), true);  
+          calc.calculate(Integer.toString(newK), true);
         }
         catch(NumberFormatException x) {
           calc.broadcast(Calc.FAIL, "can't parse K='"+kText+"'");
@@ -144,28 +144,28 @@ public class GUI extends Applet
     ignore = false;
 
     calc.addObserver(new Observer() {
-      public void update(Observable o, Object arg) 
+      public void update(Observable o, Object arg)
       {
         switch(calc.eventCode) {
         case Calc.BEGIN:
           break;
         case Calc.END: // Fall through
-        case Calc.FAIL: 
+        case Calc.FAIL:
           ignore = true;
-  
+
           Context context = calc.getContext();
-  
+
           boolean std = context.standardization;
           standardizationBox.setState(std);
           standardizationBox.setLabel(std ? "Unique" : "Multi");
-    
+
           kField.setText(Integer.toString(context.k));
 
           ignore = false;
         }
       }
     });
-   
+
     // Operation button panels
 
     Panel unaryOperButtonPanel = new Panel(new GridBagLayout());
@@ -182,11 +182,11 @@ public class GUI extends Applet
         Button b = new Button(name);
 
         b.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) 
+          public void actionPerformed(ActionEvent e)
           {
             try {
               String statementText = output.getIdentifier()+
-                                     "="+ 
+                                     "="+
                                      e.getActionCommand()+
                                      " "+
                                      inputLeft.getIdentifier();
@@ -207,7 +207,7 @@ public class GUI extends Applet
     Panel binaryOperButtonPanel = new Panel(new GridBagLayout());
 
     for(int i=0; i<binaryButtonNames.length; ++i)
-    { 
+    {
       String name = binaryButtonNames[i];
       Component c;
 
@@ -218,11 +218,11 @@ public class GUI extends Applet
         Button b = new Button(name);
 
         b.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) 
+          public void actionPerformed(ActionEvent e)
           {
             try {
               String statementText = output.getIdentifier()+
-                                     "="+ 
+                                     "="+
                                      inputLeft.getIdentifier()+
                                      " "+
                                      e.getActionCommand()+
@@ -243,7 +243,7 @@ public class GUI extends Applet
                           0, i, 1, 1);
     }
 
-    // Main panel 
+    // Main panel
     Panel mainPanel = new Panel(new GridBagLayout());
 
     Layout.addComponent(mainPanel, unaryOperButtonPanel,
@@ -259,7 +259,7 @@ public class GUI extends Applet
     inputRight = new ChuSource(calc);
     Layout.addComponent(mainPanel, inputRight,
                         4, 0, 2, 8);
- 
+
     output = new ChuTarget(calc);
     Layout.addComponent(mainPanel, output,
                         6, 0, 2, 8);
@@ -270,12 +270,12 @@ public class GUI extends Applet
 
     cardPanel.add(new ScriptPanel(calc), modes[SCRIPT]);
     cardPanel.add(new ChuEdit(calc),     modes[EDIT]);
-   
+
     // CheckboxPanel
     Panel checkboxPanel = new Panel(new GridLayout(modes.length, 1));
 
     final CheckboxGroup cbg = new CheckboxGroup();
-    Checkbox[] cba = new Checkbox[modes.length]; 
+    Checkbox[] cba = new Checkbox[modes.length];
     for(int i=0;i<modes.length;i++) {
       cba[i]  = new Checkbox(modes[i],false,cbg);
       checkboxPanel.add(cba[i]);
@@ -291,7 +291,7 @@ public class GUI extends Applet
 
     // BottomPanel
     Panel bottomPanel = new Panel();
-    bottomPanel.add(checkboxPanel);  
+    bottomPanel.add(checkboxPanel);
     bottomPanel.add(cardPanel);
 
     // Whole Applet

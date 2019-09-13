@@ -5,12 +5,12 @@ import java.util.Enumeration;
 class Program implements Executable {
   Vector statements;
 
-  Program(String programText) throws SyntaxException 
+  Program(String programText) throws SyntaxException
   {
     statements = new Vector();
 
     StringTokenizer tokenizer = new StringTokenizer(programText, ",\n");
-    while(tokenizer.hasMoreTokens()) 
+    while(tokenizer.hasMoreTokens())
     {
       String statementText = tokenizer.nextToken().trim();
       if(statementText.length() != 0)
@@ -34,7 +34,7 @@ class Program implements Executable {
     while(enum.hasMoreElements()) {
       Statement s = (Statement)enum.nextElement();
       s.exec(c);
-    }    
+    }
   }
 }
 

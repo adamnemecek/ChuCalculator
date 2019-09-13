@@ -2,7 +2,7 @@ import java.util.StringTokenizer;
 
 abstract class Statement implements Executable
 {
-  static Statement parse(String statementText) throws SyntaxException 
+  static Statement parse(String statementText) throws SyntaxException
   {
     int index = statementText.indexOf('=');
 
@@ -11,7 +11,7 @@ abstract class Statement implements Executable
       try {
         value = Integer.parseInt(statementText);
         return new SetKStatement(value);
-      } 
+      }
       catch(NumberFormatException e) {
         return new InvokeStatement(statementText);
       }
@@ -47,17 +47,17 @@ class InvokeStatement extends Statement
 {
   String executableName;
 
-  InvokeStatement(String executableName) 
+  InvokeStatement(String executableName)
   {
     this.executableName = executableName;
   }
 
-  String show() 
-  { 
-    return "Invoke program " + executableName; 
+  String show()
+  {
+    return "Invoke program " + executableName;
   }
 
-  public void exec(Calc calc) throws ExecutionException 
+  public void exec(Calc calc) throws ExecutionException
   {
     calc.lookupExecutable(executableName).exec(calc);
   }
@@ -68,7 +68,7 @@ class AssignStatement extends Statement
   String lhs;
   Expression rhs;
 
-  AssignStatement(String lhs, String rhs) throws SyntaxException 
+  AssignStatement(String lhs, String rhs) throws SyntaxException
   {
     this.lhs = lhs;
     this.rhs = Expression.parse(rhs);

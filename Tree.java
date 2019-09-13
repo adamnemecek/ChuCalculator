@@ -8,7 +8,7 @@ class Tree
   private Node top;
 
   /* constructor */
-  Tree(int arity,int length) 
+  Tree(int arity,int length)
   {
     this.arity = arity;
     this.length = length;
@@ -20,7 +20,7 @@ class Tree
   final int length() { return length;}
   final Node top() { return top;}
 
-  // findLine: Returns a linked list of the 
+  // findLine: Returns a linked list of the
   // indexes of all lines matching the given line.
   Link findLine(int line[])
   {
@@ -56,12 +56,12 @@ class Tree
 
   /* for debugging purposes only */
 
-  void show() 
+  void show()
   {
     System.out.println("ARITY "+arity);
     System.out.println("LENGTH "+length);
     top.show("");
-  } 
+  }
 }
 
 

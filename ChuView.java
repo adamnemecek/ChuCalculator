@@ -5,42 +5,42 @@ class ChuView extends Panel
 {
   // Data
   Chu currentChu;
- 
+
   // GUI elements
   TextField rowField,colField,kField;
   TextArea textArea;
 
   ChuView() {
-    super();    
-    this.currentChu = null;    
+    super();
+    this.currentChu = null;
 
     // Build and layout ChuView
     setLayout(new GridBagLayout());
 
-    rowField = new TextField(4); 
+    rowField = new TextField(4);
     rowField.setEditable(false);
-    Layout.addComponent(this, new Label("Points"), 
+    Layout.addComponent(this, new Label("Points"),
                         0, 0, 1, 1);
-    Layout.addComponent(this, rowField, 
+    Layout.addComponent(this, rowField,
                         0, 1, 1, 1);
 
-    colField = new TextField(4); 
+    colField = new TextField(4);
     colField.setEditable(false);
-    Layout.addComponent(this, new Label("States"), 
+    Layout.addComponent(this, new Label("States"),
                         1, 0, 1, 1);
-    Layout.addComponent(this, colField, 
+    Layout.addComponent(this, colField,
                         1, 1, 1, 1);
 
-    kField   = new TextField(4);   
-    kField.setEditable(false); 
-    Layout.addComponent(this, new Label("k"), 
+    kField   = new TextField(4);
+    kField.setEditable(false);
+    Layout.addComponent(this, new Label("k"),
                         2, 0, 1, 1);
-    Layout.addComponent(this, kField, 
+    Layout.addComponent(this, kField,
                         2, 1, 1, 1);
 
-    textArea = new TextArea(10,20); 
+    textArea = new TextArea(10,20);
     textArea.setEditable(false);
-    Layout.addComponent(this, textArea, 
+    Layout.addComponent(this, textArea,
                         0, 2, 3, 3);
   }
 
@@ -58,10 +58,10 @@ class ChuView extends Panel
 
   // By default, display matrix, nrows, ncols, and k.
   // call DisplaySpace(foo, true) to display only the matrix.
-  void DisplaySpace(Chu newChu) { 
-    DisplaySpace(newChu, false); 
-  } 
-  void DisplaySpace(Chu newChu, boolean matrixOnly) 
+  void DisplaySpace(Chu newChu) {
+    DisplaySpace(newChu, false);
+  }
+  void DisplaySpace(Chu newChu, boolean matrixOnly)
   {
     if(newChu == null) {
       currentChu = null;
@@ -69,7 +69,7 @@ class ChuView extends Panel
     }
     else if(newChu != currentChu) {
       currentChu = newChu;
-      
+
       if(!matrixOnly) {
         kField.setText(String.valueOf(currentChu.K()));
         rowField.setText(String.valueOf(currentChu.nrows()));
@@ -84,7 +84,7 @@ class ChuView extends Panel
     }
   }
 
-  
+
 }
 
 

@@ -12,7 +12,7 @@ class ChuSource extends Panel {
   ChuView view;
   Choice choice;
 
-  ChuSource(Calc _calc) 
+  ChuSource(Calc _calc)
   {
     calc = _calc;
 
@@ -37,9 +37,9 @@ class ChuSource extends Panel {
     // view: displays selected space
     view = new ChuView();
     Layout.addComponent(this, view,
-                        0, 1, 3, 5);    
-   
-    // register observer to handle updates after calculation 
+                        0, 1, 3, 5);
+
+    // register observer to handle updates after calculation
     calc.addObserver( new Observer() {
       public void update(Observable o, Object arg)
       {
@@ -53,7 +53,7 @@ class ChuSource extends Panel {
           choice.removeAll();
           loadChoice();
 
-          if(identifier != null) choice.select(identifier);    
+          if(identifier != null) choice.select(identifier);
 
           DisplayIdentifier();
           break;
@@ -69,16 +69,16 @@ class ChuSource extends Panel {
   void loadChoice()
   {
     Enumeration e = calc.rvalueIdentifiers();
-    while(e.hasMoreElements()) 
+    while(e.hasMoreElements())
     {
       choice.add((String)e.nextElement());
     }
   }
 
-  void DisplayIdentifier()  
-  { 
+  void DisplayIdentifier()
+  {
     try {
-      view.DisplaySpace(calc.lookupChu(getIdentifier()));   
+      view.DisplaySpace(calc.lookupChu(getIdentifier()));
     }
     catch (ExecutionException x) {
       view.DisplayMessage(x.getMessage());
@@ -90,5 +90,5 @@ class ChuSource extends Panel {
   String getIdentifier()
   {
     return choice.getSelectedItem();
-  }  
+  }
 }

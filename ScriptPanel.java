@@ -6,7 +6,7 @@ import java.util.Observable;
 class ScriptPanel extends Panel
 {
   TextArea scriptArea;
-  Button execButton;  
+  Button execButton;
   Calc calc;
 
   ScriptPanel(Calc _calc)
@@ -15,8 +15,8 @@ class ScriptPanel extends Panel
     calc = _calc;
 
     setLayout(new GridBagLayout());
-     
-    scriptArea = new TextArea(null, 10, 50, 
+
+    scriptArea = new TextArea(null, 10, 50,
                               TextArea.SCROLLBARS_VERTICAL_ONLY);
     Layout.addComponent(this, scriptArea,
                         0, 0, 10, 4);
@@ -37,7 +37,7 @@ class ScriptPanel extends Panel
                         0, 4, 10, 1);
 
     calc.addObserver(new Observer() {
-      public void update(Observable o, Object arg) 
+      public void update(Observable o, Object arg)
       {
         switch(calc.eventCode) {
         case Calc.BEGIN:
