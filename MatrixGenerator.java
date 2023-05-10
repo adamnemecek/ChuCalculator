@@ -81,7 +81,7 @@ class MatrixGenerator
   {
     boolean success;
 
-    // Loop Invarients:
+    // Loop Invariants:
     // The prefixes represented by rowNodes and colNodes
     //   cover the same set of cells and match in all values.
     // This set of cells is always the interval before some cell

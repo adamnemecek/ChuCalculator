@@ -21,18 +21,18 @@ class Program implements Executable {
   void show()
   {
     System.out.println("Program:");
-    Enumeration enum = statements.elements();
-    while(enum.hasMoreElements()) {
-      Statement s = (Statement)enum.nextElement();
+    Enumeration e = statements.elements();
+    while(e.hasMoreElements()) {
+      Statement s = (Statement)e.nextElement();
       System.out.println(s.show());
     }
   }
 
   public void exec(Calc c) throws ExecutionException
   {
-    Enumeration enum = statements.elements();
-    while(enum.hasMoreElements()) {
-      Statement s = (Statement)enum.nextElement();
+    Enumeration e = statements.elements();
+    while(e.hasMoreElements()) {
+      Statement s = (Statement)e.nextElement();
       s.exec(c);
     }
   }
